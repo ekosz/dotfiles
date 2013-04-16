@@ -1,0 +1,271 @@
+set nocompatible               " be iMproved
+filetype off                   " required!
+
+set rtp+=~/.vim/bundle/vundle/
+call vundle#rc()
+
+" let Vundle manage Vundle
+" required!
+Bundle 'gmarik/vundle'
+
+" My Bundles here:
+Bundle 'scrooloose/nerdtree'
+Bundle 'kien/ctrlp.vim'
+Bundle 'sjl/gundo.vim'
+Bundle 'kchmck/vim-coffee-script'
+Bundle 'elixir-lang/vim-elixir'
+Bundle 'tpope/vim-endwise'
+Bundle 'tpope/vim-fugitive'
+Bundle 'tpope/vim-rails'
+Bundle 'airblade/vim-gitgutter'
+Bundle 'nono/vim-handlebars'
+Bundle 'digitaltoad/vim-jade'
+Bundle 'sickill/vim-pasta'
+
+filetype plugin indent on     " required!
+
+" Color scheme settings
+colorscheme Tomorrow-Night-Eighties
+syntax on
+
+set nocompatible
+
+set modelines=0
+
+"Folding
+set foldmethod=syntax
+set foldnestmax=10      "deepest fold is 10 levels
+set nofoldenable        "dont fold by default
+set foldlevel=1         "this is just what i use
+nnoremap <silent> <Space> @=(foldlevel('.')?'za':"\<Space>")<CR>
+
+"taps setup
+set tabstop=2
+set shiftwidth=2
+set softtabstop=2
+set expandtab
+
+"Language specific settings
+autocmd FileType javascript setlocal expandtab tabstop=4 shiftwidth=4 softtabstop=4
+
+"Fugitive
+autocmd QuickFixCmdPost *grep* cwindow " Auto open quickfix after grep
+autocmd QuickFixCmdPost *log* cwindow " Auto open quickfix after log
+
+"Misc
+set backupdir=~/.vim/vimtmp,.
+set directory=~/.vim/vimtmp,.
+set encoding=utf-8
+set scrolloff=3
+set autoindent
+set showmode
+set showcmd
+set hidden
+set wildmenu
+set wildmode=list:longest
+set visualbell
+set cursorline
+set ttyfast
+set ruler
+set backspace=indent,eol,start
+set laststatus=2
+set relativenumber
+set undodir=~/.vim/vimtmp,.
+set undofile
+set undolevels=1000 "maximum number of changes that can be undone
+nnoremap / /\v
+vnoremap / /\v
+set ignorecase
+set smartcase
+set gdefault
+set incsearch
+set showmatch
+set hlsearch
+nnoremap <tab> %
+vnoremap <tab> %
+autocmd BufWritePre * :%s/\s\+$//e " Strip whitespace on save
+
+"Windowing
+set winminwidth=10
+set winwidth=110
+
+"Long Lines
+set wrap
+set textwidth=79
+set formatoptions=qrn1
+set colorcolumn=100
+
+"Noob stuff
+nnoremap <up> <nop>
+nnoremap <down> <nop>
+nnoremap <left> <nop>
+nnoremap <right> <nop>
+inoremap <up> <nop>
+inoremap <down> <nop>
+inoremap <left> <nop>
+inoremap <right> <nop>
+
+"Don't need help
+inoremap <F1> <ESC>
+nnoremap <F1> <ESC>
+vnoremap <F1> <ESC>
+
+"Save on focus
+au FocusLost * :wa
+
+"JJ to ESC
+inoremap jj <ESC>
+
+"Leader stuff
+let mapleader=","
+nnoremap <leader>w <C-w>v<C-w>l "Open new vertical split and move to it
+nnoremap <leader><space> :noh<cr>
+nnoremap <leader>ge :cf /tmp/autotest.txt<cr>
+nnoremap <leader>md :!mkdir -p %:p:h<cr>
+nnoremap <leader>rs :RunSpec<cr>
+nnoremap <leader>rts :RunSpecLine<cr>
+function! NumberToggle()
+  if(&relativenumber == 1)
+    set number
+  else
+    set relativenumber
+  endif
+endfunc
+nnoremap <leader>l :call NumberToggle()<cr>
+
+nnoremap <leader>ff "zyiw:exe "/\\v(".@z.":\|function ".@z."\|def ".@z.")"<cr>
+
+"Moving around windows
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
+
+"NERDTree
+map <F2> :NERDTreeToggle<CR>
+
+"Gundo
+nnoremap <F5> :GundoToggle<CR>
+let g:gundo_right = 1
+
+"Syntastic Settings
+let g:syntastic_enable_signs=1
+let g:syntastic_auto_jump=1
+let g:syntastic_auto_loc_list=1
+
+" Settings for VimClojure
+let g:clj_highlight_builtins=1      " Highlight Clojure's builtins
+let g:clj_paren_rainbow=1           " Rainbow parentheses'!
+let g:vimclojure#DynamicHighlighting=1 " Dynamically highlight functions
+" ---------------------------------------------------------------------------
+"  Automagic Clojure folding on defn's and defmacro's
+"
+function GetClojureFold()
+  if getline(v:lnum) =~ '^\s*(defn.*\s'
+    return ">1"
+  elseif getline(v:lnum) =~ '^\s*(defmacro.*\s'
+    return ">1"
+  elseif getline(v:lnum) =~ '^\s*(defmethod.*\s'
+    return ">1"
+  elseif getline(v:lnum) =~ '^\s*$'
+    let my_cljnum = v:lnum
+    let my_cljmax = line("$")
+
+    while (1)
+      let my_cljnum = my_cljnum + 1
+      if my_cljnum > my_cljmax
+        return "<1"
+      endif
+
+      let my_cljdata = getline(my_cljnum)
+
+      " If we match an empty line, stop folding
+      if my_cljdata =~ '^$'
+        return "<1"
+      else
+        return "="
+      endif
+    endwhile
+  else
+    return "="
+  endif
+endfunction
+
+function TurnOnClojureFolding()
+  setlocal foldexpr=GetClojureFold()
+  setlocal foldmethod=expr
+endfunction
+
+au BufNewFile,BufRead *.hiccup set filetype=clojure
+
+autocmd FileType clojure call TurnOnClojureFolding()
+
+"Statusline
+set statusline=%<%h%m%r%y\ %#warningmsg#\ %{SyntasticStatuslineFlag()}%*%=\ col:%c%V\ lin:%l\,%L\ %P
+
+"Tabcomplete
+set complete=.,b,u,]
+imap <Tab> <C-P>
+set wildmode=longest,list:longest
+
+if (&tildeop)
+  nmap gcw guw~l
+  nmap gcW guW~l
+  nmap gciw guiw~l
+  nmap gciW guiW~l
+  nmap gcis guis~l
+  nmap gc$ gu$~l
+  nmap gcgc guu~l
+  nmap gcc guu~l
+  vmap gc gu~l
+else
+  nmap gcw guw~h
+  nmap gcW guW~h
+  nmap gciw guiw~h
+  nmap gciW guiW~h
+  nmap gcis guis~h
+  nmap gc$ gu$~h
+  nmap gcgc guu~h
+  nmap gcc guu~h
+  vmap gc gu~h
+endif
+
+" set 256 colors
+set t_Co=256
+
+" Speed up vim-ruby plugin
+if !empty($MY_RUBY_HOME)
+ let g:ruby_path = join(split(glob($MY_RUBY_HOME.'/lib/ruby/*.*')."\n".glob($MY_RUBY_HOME.'/lib/ruby/site_ruby/*'),"\n"),',')
+endif
+
+" ctrlp
+set runtimepath^=~/.vim/bundle/ctrlp.vim
+nmap <leader><leader> :CtrlP<cr>
+let g:ctrlp_custom_ignore = {
+  \ 'dir':  '\v[\/](\.(git|hg|svn)|ebin|deps)$',
+  \ 'file': '\v\.(exe|so|dll)$',
+  \ 'link': 'some_bad_symbolic_links',
+  \ }
+
+" powerline
+python import sys; sys.path.append("/Library/Python/2.7/site-packages")
+python from powerline.bindings.vim import source_plugin; source_plugin()
+set fillchars+=stl:\ ,stlnc:\
+
+" Remap :E to :e
+cnoreabbrev <expr> E getcmdtype() == ":" && getcmdline() == "E" ? "e" : "E"
+" Remap :W to :w
+cnoreabbrev <expr> W getcmdtype() == ":" && getcmdline() == "W" ? "w" : "W"
+
+" Make vim command line more like everything else
+cnoremap <C-a>  <Home>
+cnoremap <C-b>  <Left>
+cnoremap <C-f>  <Right>
+cnoremap <C-d>  <Delete>
+cnoremap <M-b>  <S-Left>
+cnoremap <M-f>  <S-Right>
+cnoremap <M-d>  <S-right><Delete>
+cnoremap <Esc>b <S-Left>
+cnoremap <Esc>f <S-Right>
+cnoremap <Esc>d <S-right><Delete>
+cnoremap <C-g>  <C-c>

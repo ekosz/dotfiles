@@ -1,0 +1,30 @@
+[core]
+	excludesfile = /Users/ekosz/.gitignore_global
+  editor = /usr/bin/vim
+[user]
+  name = Eric Koslow
+  email = ekoslow@gmail.com
+[color]
+  ui = auto
+[github]
+  user = ekosz
+  token = 7bb57bcf2c3f546cf34f3eaf304a1aeb
+[alias]
+  st = status
+  br = branch
+  ci = commit
+  co = checkout
+  lg = log --oneline --graph --all --decorate
+  aa = add -A
+  cm = commit -m 
+  pl = pull --rebase
+[merge]
+  tool = FileMerge
+[branch]
+  autosetuprebase = always
+[push]
+  default = current
+[help]
+	autocorrect = 1
+[hub]
+	host = github.groupondev.com

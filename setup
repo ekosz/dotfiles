@@ -1,0 +1,36 @@
+#!/bin/ruby
+
+def link(source, dest)
+  `ln -s #{source} ~/.#{dest}`
+end
+
+# Install zsh
+`mkdir -p ~/.oh-my-zsh/custom/plugins`
+link "zsh/koslow/" "oh-my-zsh/custom/plugins/koslow/"
+link "zsh/code/" "oh-my-zsh/custom/plugins/code/"
+
+# Link vimrc
+link "vim/vimrc", "vimrc"
+`mkdir ~/.vim`
+link "vim/autoload/", "vim/autoload/"
+link "vim/colors/", "vim/colors/"
+link "vim/doc/", "vim/doc/"
+link "vim/ftdetect/", "vim/ftdetect/"
+link "vim/ftplugin/", "vim/ftplugin/"
+link "vim/plugin/", "vim/plugin/"
+link "vim/spell/", "vim/spell/"
+link "vim/surround/", "vim/surround/"
+link "vim/syntax/", "vim/syntax/"
+link "vim/syntax_checkers/", "vim/syntax_checkers/"
+`git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle`
+`vim +BundleInstall +qall`
+
+# Link tmux
+link "tmux/tmux.conf", "tmux.conf"
+
+# Link git
+link "git/gitconfig", "gitconfig"
+link "git/gitignore_global", "gitignore_global"
+
+# Link Ack
+link "ack/ackrc", "ackrc"

@@ -1,0 +1,25 @@
+## GENERAL
+# only search with case sensitivity if there is mixed case
+--smart-case
+# follow symlinks
+--follow
+
+## GLOBAL IGNORES
+--ignore-dir=.sass-cache
+--ignore-dir=.idea
+
+## NEW TYPES
+--type-set
+coffeescript=.coffee
+--type-set
+markdown=.markdown,.md,.mdown
+--type-set
+cucumber=.feature
+--type-set
+sass=.sass,.scss
+
+## EXTEND OLD TYPES
+--type-add
+ruby=.haml,.builder,.rake
+--type-add
+css=.sass,.scss
