@@ -84,6 +84,8 @@ set hlsearch
 nnoremap <tab> %
 vnoremap <tab> %
 autocmd BufWritePre * :%s/\s\+$//e " Strip whitespace on save
+set splitbelow
+set splitright
 
 "Windowing
 set winminwidth=10
