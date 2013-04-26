@@ -47,6 +47,7 @@ set expandtab
 
 "Language specific settings
 autocmd FileType javascript setlocal expandtab tabstop=4 shiftwidth=4 softtabstop=4
+autocmd FileType php setlocal expandtab tabstop=4 shiftwidth=4 softtabstop=4
 
 "Fugitive
 autocmd QuickFixCmdPost *grep* cwindow " Auto open quickfix after grep
@@ -250,8 +251,8 @@ let g:ctrlp_custom_ignore = {
   \ }
 
 " powerline
-python import sys; sys.path.append("/Library/Python/2.7/site-packages")
-python from powerline.bindings.vim import source_plugin; source_plugin()
+"python import sys; sys.path.append("/Library/Python/2.7/site-packages")
+"python from powerline.bindings.vim import source_plugin; source_plugin()
 set fillchars+=stl:\ ,stlnc:\
 
 " Remap :E to :e
