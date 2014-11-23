@@ -10,14 +10,19 @@
   user = ekosz
   token = 7bb57bcf2c3f546cf34f3eaf304a1aeb
 [alias]
-  st = status
+  st = status -sb
   br = branch
   ci = commit
   co = checkout
-  lg = log --oneline --graph --all --decorate
+  com = checkout master
+	lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
   aa = add -A
-  cm = commit -m 
+  cm = commit -m
   pl = pull --rebase
+  fpush = !git push --force origin $(git rev-parse --abbrev-ref HEAD);
+  dmerged = "!f() { git branch --merged | grep -v '^* master$' | grep -v '^  master$' | xargs git branch -d; }; f"
+  new = "!f() { git checkout -b EK/$1 master; }; f"
+  cleanup = "!f() { git stash clear; git remote prune origin; git dmerged; git gc; }; f"
 [merge]
   tool = FileMerge
 [branch]
@@ -28,3 +33,9 @@
 	autocorrect = 1
 [hub]
 	host = github.groupondev.com
+[pull]
+	default = current
+[color "diff"]
+	whitespace = red reverse
+[credential]
+	helper = osxkeychain
