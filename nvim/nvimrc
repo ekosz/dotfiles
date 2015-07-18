@@ -1,0 +1,361 @@
+" ==== Plugins =====================  {{{
+" ==================================
+filetype off                   " required!
+
+call plug#begin('~/.vim/plugged')
+
+" My Bundles here:
+" GLOBALS
+Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-endwise'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-dispatch'
+Plug 'tpope/vim-abolish'
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-rsi'
+Plug 'scrooloose/syntastic'
+Plug 'kien/ctrlp.vim'
+Plug 'sjl/gundo.vim', { 'on': 'GundoToggle' }
+Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
+Plug 'sickill/vim-pasta'
+Plug 'rking/ag.vim', { 'on': 'Ag' }
+Plug 'scratch.vim', { 'on': 'Scratch' }
+Plug 'christoomey/vim-tmux-navigator'
+Plug 'terryma/vim-expand-region'
+Plug 'vim-scripts/gitignore'
+
+" UI HELPERS
+Plug 'bling/vim-airline'
+Plug 'airblade/vim-gitgutter'
+
+" RUBY
+Plug 'tpope/vim-rails', { 'for': 'ruby' }
+Plug 'tpope/vim-cucumber', { 'for': 'ruby' }
+Plug 'thoughtbot/vim-rspec', { 'for': 'ruby' }
+
+" COFEESCRIPT
+Plug 'kchmck/vim-coffee-script', { 'for': 'coffee' }
+
+" ELIXIR
+Plug 'elixir-lang/vim-elixir', { 'for': 'elixir' }
+
+" HANDLEBARS
+Plug 'nono/vim-handlebars', { 'for': 'handlebars' }
+
+" JADE
+Plug 'digitaltoad/vim-jade', { 'for': 'jade' }
+
+" SLIM
+Plug 'slim-template/vim-slim', { 'for': 'slim' }
+
+" EMBLEM
+Plug 'heartsentwined/vim-emblem', { 'for': 'emblem' }
+
+" JAVASCRIPT
+Plug 'jelera/vim-javascript-syntax', { 'for': 'javascript' }
+Plug 'mxw/vim-jsx', { 'for': 'javascript' }
+
+" The best colors
+Plug 'chriskempson/tomorrow-theme', { 'rtp': 'vim/' }
+
+call plug#end()
+
+" }}}
+
+" ==== General ===================== {{{
+" ==================================
+filetype plugin indent on
+syntax enable
+
+set shell=/bin/zsh " Use zsh as shell
+set foldmethod=syntax " fold based on syntax
+set foldnestmax=10 " deepest fold is 10 levels
+set nofoldenable " dont fold by default
+set foldlevel=1 " this is just what i use
+set modelines=0 " turn off modelines
+set tabstop=2  " 2 space indents by default
+set shiftwidth=2 " ...
+set softtabstop=2 " ...
+set expandtab " ...
+set undofile " Save a file of all of the undos
+set undolevels=1000 " Maximum number of changes that can be undone
+set backupdir=~/.vim/vimtmp,. " store backups in the .vim directory
+set directory=~/.vim/vimtmp,. " ...
+set undodir=~/.vim/vimtmp,. " ...
+set encoding=utf-8 " Always use UTF8 encodding
+set scrolloff=3 " Min. lines to keep above or below the cursor when scrolling
+set autoindent " Auto indent new lines
+set noshowmode " Don't show current mode, let airline handle that
+set hidden " Don't unload buffers when leaving them
+set wildmenu " Enable command-line like completion
+set wildmode=list:longest " List all matches and complete till longest common string
+set visualbell " Disable annoying beep
+set cursorline " Show line where cursor is
+set ruler " Show current cursor position
+set backspace=indent,eol,start " Backspace over everything in insert mode
+set laststatus=2 " Always show the status line
+set relativenumber " Use relative line numbers
+set ignorecase " Ignore case when searching
+set smartcase " Be case sensitive when there are capital letters
+set gdefault " Globally replace be default
+set incsearch " Start searching after first letter
+set showmatch " Show the matching paren when hovering over one
+set hlsearch " Highlight found search results
+set splitbelow " Split below be default
+set splitright " Split to the right by default
+set winminwidth=5 " Windows can not get smaller than 5 columns
+set winwidth=110 " Windows are set to 110 columns by default
+set textwidth=79 " Wrap text around the 79 column
+set formatoptions=qrn1 " Misc formating options
+set colorcolumn=100 " Color the 100th column
+set pastetoggle=<F3> " Go into paste mode with F3
+set complete=.,b,u,] " Tab complete correctly
+set t_Co=256 " Give me all the colors pls
+set nobackup " Don't make backups
+set noswapfile " Don't make swap files
+set list " Show unprintable characters
+set listchars=tab:▸\  " Char representing a tab
+set listchars+=extends:❯ " Char representing an extending line
+set listchars+=precedes:❮ " Char representing an extending line in the other direction
+set listchars+=nbsp:␣ " Non breaking space
+set listchars+=trail:· " Show trailing spaces as dots
+set showbreak=↪  " Show wraped lines with this char
+set linebreak " Don't break lines in the middle of words
+set fillchars+=vert:\  " Don't show pipes in vertical splits
+set background=dark " I use a dark background
+set nowrap " Don't wrap lines
+
+colorscheme Tomorrow-Night-Eighties
+
+" }}}
+
+" ==== Auto commands =============== {{{
+" ==================================
+
+augroup miscGroup
+  autocmd!
+
+  " Jump to last cursor position unless it's invalid or in an event handler
+  autocmd BufReadPost *
+    \ if line("'\"") > 0 && line("'\"") <= line("$") |
+    \   exe "normal g`\"" |
+    \ endif
+
+  autocmd BufWritePre * :%s/\s\+$//e " Strip whitespace on save
+  autocmd FocusLost * :wa " Save on focus
+
+  autocmd FileType php setlocal expandtab tabstop=4 shiftwidth=4 softtabstop=4
+  autocmd BufNewFile,BufRead Gemfile set filetype=ruby
+  autocmd BufNewFile,BufRead *.embl set filetype=emblem
+  autocmd BufNewFile,BufRead *.hiccup set filetype=clojure
+  autocmd BufNewFile,BufReadPost *.md set filetype=markdown
+
+  "Fugitive
+  autocmd QuickFixCmdPost *grep* cwindow " Auto open quickfix after grep
+  autocmd QuickFixCmdPost *log* cwindow " Auto open quickfix after log
+
+  "Spelling
+  autocmd BufRead,BufNewFile *.md setlocal spell
+  autocmd FileType gitcommit setlocal spell
+augroup END
+
+" }}}
+
+" ==== Mappings ==================== {{{
+" ==================================
+
+"NERDTree
+map <F2> :NERDTreeToggle<CR>
+
+"Gundo
+nnoremap <F5> :GundoToggle<CR>
+
+" `noremap` means to make a nonrecursive mapping
+" that means that vim will not take other mapping
+" into account when doing your new map
+
+" Disable useless and annoying keys
+noremap Q <Nop>
+noremap K <Nop>
+
+" Remap :E to :e
+cnoreabbrev <expr> E getcmdtype() == ":" && getcmdline() == "E" ? "e" : "E"
+" Remap :W to :w
+cnoreabbrev <expr> W getcmdtype() == ":" && getcmdline() == "W" ? "w" : "W"
+
+" Make Y work as expected
+nnoremap Y y$
+
+" Always use very magic regex mode when searching
+nnoremap / /\v
+vnoremap / /\v
+nnoremap ? ?\v
+
+nnoremap <tab> %
+vnoremap <tab> %
+
+" Resize windows with the arrow keys
+nnoremap <up> <C-W>+
+nnoremap <down> <C-W>-
+nnoremap <left> 3<C-W>>
+nnoremap <right> 3<C-W><
+
+" Don't use those stupid arrow keys!
+inoremap <up> <nop>
+inoremap <down> <nop>
+inoremap <left> <nop>
+inoremap <right> <nop>
+
+"Don't need help
+inoremap <F1> <ESC>
+nnoremap <F1> <ESC>
+vnoremap <F1> <ESC>
+
+"Fast escapes
+inoremap jj <ESC>
+inoremap jk <ESC>
+inoremap kj <ESC>
+
+"Tabcomplete
+imap <Tab> <C-P>
+
+" Fix for nvim
+if has('nvim')
+  nmap <BS> <C-W>h
+endif
+
+" vim-expand-region
+vmap v <Plug>(expand_region_expand)
+vmap <C-v> <Plug>(expand_region_shrink)
+
+" }}}
+
+" ==== Leader Mappings ============= {{{
+" ==================================
+
+let mapleader=","
+let maplocalleader = '\\'
+
+nnoremap <leader><space> :noh<cr>
+nnoremap <leader><leader> :CtrlP<cr>
+
+"-- a --"
+"-- b --"
+nnoremap <leader>b :CtrlPBuffer<CR>
+"-- c --"
+"-- d --"
+vmap <leader>d "+d
+"-- e --"
+"-- f --"
+nnoremap <leader>ff :NERDTreeFind<CR>
+nnoremap <leader>F :CtrlPMRUFiles<CR>
+"-- g --"
+nnoremap <leader>git :e ~/.gitconfig<cr>
+nnoremap <leader>gs [<C-d><cr>
+"-- h --"
+nnoremap <leader>hr :%s/\v:(\w+) \=\> /\1: /<CR>
+"-- i --"
+"-- j --"
+"-- k --"
+"-- l --"
+nnoremap <leader>l :call NumberToggle()<cr>
+"-- m --"
+nnoremap <leader>md :!mkdir -p %:p:h<cr>
+"-- n --"
+"-- o --"
+"-- p --"
+nmap <leader>p "+p
+nmap <leader>P "+P
+vmap <leader>p "+p
+vmap <leader>P "+P
+"-- q --"
+"-- r --"
+nnoremap <leader>rvim :so $MYVIMRC<cr>
+nnoremap <leader>rs :call RunCurrentSpecFile()<cr>
+nnoremap <leader>rts :call RunNearestSpec()<cr>
+"-- s --"
+nnoremap <leader>S :%S/<C-r><C-w>/
+"-- t --"
+nnoremap <leader>tmux :e ~/.tmux.conf<cr>
+"-- u --"
+"-- v --"
+" Edit vimrc file
+nnoremap <leader>vim :e $MYVIMRC<CR>
+"-- w --"
+"-- x --"
+"-- y --"
+vmap <leader>y "+y
+"-- z --"
+nnoremap <leader>zsh :e ~/.zshrc<cr>
+
+" }}}
+
+
+" === Abolish ============== {{{
+" ==========================
+
+
+
+" }}}
+
+" ==== Misc Plugin Configs ========= {{{
+" ==================================
+
+" Gundo Settings
+let g:gundo_right = 1
+
+"Syntastic Settings
+let g:syntastic_enable_signs=1
+let g:syntastic_auto_jump=1
+let g:syntastic_auto_loc_list=1
+let g:syntastic_html_tidy_ignore_errors=[" proprietary attribute \"ng-"]
+let g:syntastic_html_validator_parser='html5'
+let g:syntastic_ruby_checkers = ['mri', 'rubocop']
+let g:syntastic_sass_checkers = []
+let g:syntastic_scss_checkers = []
+let g:syntastic_javascript_checkers = ['`npm bin`/eslint']
+let g:syntastic_html_checkers = []
+
+" Speed up vim-ruby plugin
+if !empty($MY_RUBY_HOME)
+ let g:ruby_path = join(split(glob($MY_RUBY_HOME.'/lib/ruby/*.*')."\n".glob($MY_RUBY_HOME.'/lib/ruby/site_ruby/*'),"\n"),',')
+endif
+
+" ctrlp
+set runtimepath^=~/.nvim/bundle/ctrlp.vim
+
+let g:ctrlp_custom_ignore = {
+  \ 'dir':  '\v[\/](\.(git|hg|svn)|tmp|ebin|deps|node_modules)$',
+  \ 'file': '\v\.(exe|so|dll)$',
+  \ 'link': 'some_bad_symbolic_links',
+  \ }
+
+" vim-spec
+let g:rspec_command = "compiler rspec | set makeprg=zeus | Make rspec {spec}"
+
+" airline
+let g:airline_theme='tomorrow'
+
+" vim-jsx
+let g:jsx_ext_required = 0 " Allow JSX in normal JS files
+
+" ==== Functions =============== {{{
+" ==================================
+
+"Switch between numbers
+function! NumberToggle()
+  if(&relativenumber == 1)
+    set number
+  else
+    set relativenumber
+  endif
+endfunc
+
+"Find replace in a project
+function! FindReplace(find, replace)
+  call Ag(find)
+  call Cdo
+endfunc
+
+" }}}
