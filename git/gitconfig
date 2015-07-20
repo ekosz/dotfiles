@@ -1,6 +1,6 @@
 [core]
 	excludesfile = /Users/ekosz/.gitignore_global
-  editor = /usr/bin/vim
+  editor = /usr/local/bin/nvim
 [user]
   name = Eric Koslow
   email = ekoslow@gmail.com
