@@ -43,7 +43,7 @@ brew install homebrew/dupes/grep 2>/dev/null
 
 # Override defaut OSX bins
 if ! grep -q $(brew --prefix coreutils) "$HOME/.zshrc"; then
-  echo "\$PATH=$(brew --prefix coreutils)/libexec/gnubin:\$PATH" >> "$HOME/.zshrc"
+  echo "export PATH=$(brew --prefix coreutils)/libexec/gnubin:\$PATH" >> "$HOME/.zshrc"
 fi
 
 binaries=(
@@ -71,6 +71,7 @@ brew install caskroom/cask/brew-cask 2>/dev/null
 
 # Apps
 apps=(
+  alfred
   appcleaner
   betterzipql
   caffeine
