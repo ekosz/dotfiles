@@ -47,15 +47,16 @@ if ! grep -q $(brew --prefix coreutils) "$HOME/.zshrc"; then
 fi
 
 binaries=(
-  neovim
-  git
-  tmux
-  wget
-  the_silver_searcher
-  node
+  editorconfig
   elixir
+  git
+  neovim
+  node
   rbenv
   ruby-build
+  the_silver_searcher
+  tmux
+  wget
 )
 
 echo "Installing brew binaries..."
