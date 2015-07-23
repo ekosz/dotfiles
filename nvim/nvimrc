@@ -24,6 +24,7 @@ Plug 'scratch.vim', { 'on': 'Scratch' }
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'terryma/vim-expand-region'
 Plug 'vim-scripts/gitignore'
+Plug 'editorconfig/editorconfig-vim'
 
 " UI HELPERS
 Plug 'bling/vim-airline'
@@ -339,6 +340,10 @@ let g:airline_theme='tomorrow'
 
 " vim-jsx
 let g:jsx_ext_required = 0 " Allow JSX in normal JS files
+
+" editorconfig-vim
+" Work with Fugitive
+let g:EditorConfig_exclude_patterns = ['fugitive://.*']
 
 " ==== Functions =============== {{{
 " ==================================
