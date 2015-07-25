@@ -46,11 +46,15 @@ if ! grep -q $(brew --prefix coreutils) "$HOME/.zshrc"; then
   echo "export PATH=$(brew --prefix coreutils)/libexec/gnubin:\$PATH" >> "$HOME/.zshrc"
 fi
 
+if test ! $(which neovim); then
+  brew tap neovim/neovim
+  brew install --HEAD neovim
+fi
+
 binaries=(
   editorconfig
   elixir
   git
-  neovim
   node
   rbenv
   ruby-build
@@ -60,7 +64,7 @@ binaries=(
 )
 
 echo "Installing brew binaries..."
-brew install ${binaries[@]} 2>/dev/null
+brew install ${binaries[@]}
 
 # Finish rbenv setup
 if ! grep -q "rbenv init" "$HOME/.zshrc"; then
