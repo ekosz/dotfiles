@@ -13,7 +13,7 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-dispatch'
 Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-commentary'
-Plug 'tpope/vim-rsi'
+Plug 'bruno-/vim-husk'
 Plug 'scrooloose/syntastic'
 Plug 'kien/ctrlp.vim'
 Plug 'sjl/gundo.vim', { 'on': 'GundoToggle' }
@@ -25,6 +25,7 @@ Plug 'christoomey/vim-tmux-navigator'
 Plug 'terryma/vim-expand-region'
 Plug 'vim-scripts/gitignore'
 Plug 'editorconfig/editorconfig-vim'
+Plug 'SirVer/ultisnips'
 
 " UI HELPERS
 Plug 'bling/vim-airline'
@@ -134,6 +135,14 @@ colorscheme Tomorrow-Night-Eighties
 " ==== Auto commands =============== {{{
 " ==================================
 
+fun! StripTrailingWhitespace()
+  " Only strip if the b:noStripeWhitespace variable isn't set
+  if exists('b:noStripWhitespace')
+    return
+  endif
+  %s/\s\+$//e
+endfun
+
 augroup miscGroup
   autocmd!
 
@@ -143,7 +152,8 @@ augroup miscGroup
     \   exe "normal g`\"" |
     \ endif
 
-  autocmd BufWritePre * :%s/\s\+$//e " Strip whitespace on save
+  autocmd BufWritePre * call StripTrailingWhitespace()
+  autocmd FileType snippets let b:noStripWhitespace=1
   autocmd FocusLost * :wa " Save on focus
 
   autocmd FileType php setlocal expandtab tabstop=4 shiftwidth=4 softtabstop=4
@@ -280,6 +290,7 @@ nnoremap <leader>S :%S/<C-r><C-w>/
 "-- t --"
 nnoremap <leader>tmux :e ~/.tmux.conf<cr>
 "-- u --"
+nnoremap <leader>us :UltiSnipsEdit<cr>
 "-- v --"
 " Edit vimrc file
 nnoremap <leader>vim :e $MYVIMRC<CR>
@@ -344,6 +355,11 @@ let g:jsx_ext_required = 0 " Allow JSX in normal JS files
 " editorconfig-vim
 " Work with Fugitive
 let g:EditorConfig_exclude_patterns = ['fugitive://.*']
+
+" ultisnips
+let g:UltiSnipsExpandTrigger="<leader><tab>"
+let g:UltiSnipsJumpForwardTrigger="<c-j>"
+let g:UltiSnipsJumpBackwardTrigger="<c-k>"
 
 " ==== Functions =============== {{{
 " ==================================
