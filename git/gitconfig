@@ -1,6 +1,6 @@
 [core]
 	excludesfile = /Users/ekosz/.gitignore_global
-  editor = /usr/local/bin/nvim
+  editor = /usr/bin/vim
 [user]
   name = Eric Koslow
   email = ekoslow@gmail.com
@@ -20,10 +20,11 @@
   cm = commit -m
   ff = !git merge --ff-only origin/$(git rev-parse --abbrev-ref HEAD);
   pl = pull --rebase
-  fpush = !git push --force origin $(git rev-parse --abbrev-ref HEAD);
+  fpush = !git push --force-with-lease origin $(git rev-parse --abbrev-ref HEAD);
   dmerged = "!f() { git branch --merged | grep -v '^* master$' | grep -v '^  master$' | grep -v '^  develop$' | xargs git branch -d; }; f"
   new = "!f() { git checkout -b feature/EK/$1 develop; }; f"
   cleanup = "!f() { git stash clear; git remote prune origin; git dmerged; git gc; }; f"
+  uptodate = !git fetch && git rebase origin/master
 [merge]
   tool = FileMerge
 [branch]
@@ -39,6 +40,9 @@
 [credential]
 	helper = osxkeychain
 [filter "lfs"]
-	clean = git lfs clean %f
-	smudge = git lfs smudge %f
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
 	required = true
+[pager]
+	branch = false

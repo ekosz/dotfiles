@@ -1,0 +1,136 @@
+snippet Props "insert Props type"
+type ${1:Props} = {
+	$0
+};
+endsnippet
+
+snippet import "import npm module"
+import ${1} from '${2:`!p snip.rv = t[1].lower()`}';
+endsnippet
+
+snippet hocim "import hoc componenet"
+import ${1} from 'app/hocs/$1';
+endsnippet
+
+snippet createContainer "create relay container"
+Relay.createContainer(${1}, {
+	fragments: {
+		${2}: () => Relay.QL\`
+			fragment on ${3:`!p snip.rv = t[2].title()`} {
+				$0
+			}
+		\`,
+	},
+});
+endsnippet
+
+snippet igetfrag "get relay fragment"
+${${1}.getFragment('${2}')}$0
+endsnippet
+
+snippet iwithRelay "create withRelay container"
+withRelay({
+	fragments: {
+		${1}: () => Relay.QL\`fragment on ${2:`!p snip.rv = t[1].title()`} {
+			$0
+		}\`,
+	},
+}),
+endsnippet
+
+snippet inewrelay "create new relay container from scratch"
+// @flow
+import React from 'react';
+import Relay from 'react-relay';
+import { compose } from 'recompose';
+
+import withRelay from 'app/hocs/withRelay';
+
+type Props = {
+	$2: {
+	},
+};
+function ${1}(props: Props) {
+	return (
+		$0
+	);
+}
+
+export default compose(
+	withRelay({
+		fragments: {
+			${2:viewer}: () => Relay.QL\`fragment on ${3:`!p snip.rv = t[2].title()`} {
+			}\`,
+		},
+	})
+)($1);
+endsnippet
+
+snippet inewcomp "create new react componenet from scratch"
+// @flow
+import React from 'react';
+
+type Props = {
+};
+function ${1}(props: Props) {
+	return (
+		$0
+	);
+}
+
+export default $1;
+endsnippet
+
+snippet inewmutation "create a new relay mutation from scratch"
+import Relay from 'react-relay';
+
+export default class ${1}Mutation extends Relay.Mutation {
+	getMutation() {
+		return Relay.QL\`mutation { ${2} }\`;
+	}
+
+	getVariables() {
+		return {
+			${3}
+		};
+	}
+
+	getFatQuery() {
+		return Relay.QL\`fragment on $1Payload @relay(pattern: true) {
+			${4}
+			errors
+		}\`;
+	}
+
+	getConfigs() {
+		return [{
+			type: 'FIELDS_CHANGE',
+			fieldIDs: {
+				${5}
+			},
+		}, {
+			type: 'REQUIRED_CHILDREN',
+			children: [
+				Relay.QL\`fragment on $1Payload {
+					errors
+				}\`,
+			],
+		}];
+	}
+}
+endsnippet
+
+snippet iadderrorschildren "add errors children"
+{
+	type: 'REQUIRED_CHILDREN',
+	children: [
+		Relay.QL\`fragment on ${1} {
+			errors
+		}\`,
+	],
+}
+endsnippet
+
+snippet ilogvar "add console for var"
+console.log('$1', ${1});
+endsnippet
