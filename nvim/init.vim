@@ -2,60 +2,45 @@
 " ==================================
 filetype off                   " required!
 
+" Specify a directory for plugins
 call plug#begin('~/.vim/plugged')
 
-function! DoRemote(arg)
-  UpdateRemotePlugins
-endfunction
-
-" My Bundles here:
 " GLOBALS
 Plug 'tpope/vim-repeat'
-Plug 'tpope/vim-endwise'
-Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
-Plug 'tpope/vim-dispatch'
-Plug 'tpope/vim-abolish'
-Plug 'tpope/vim-commentary'
-Plug 'vim-utils/vim-husk'
-Plug 'sheerun/vim-polyglot'
-Plug 'w0rp/ale'
-Plug 'sjl/gundo.vim', { 'on': 'GundoToggle' }
+Plug 'tpope/vim-obsession' " Vim session managment
+Plug 'tpope/vim-fugitive' " Vim git plugin
+Plug 'tpope/vim-abolish' " Better find/replace
+" Plug 'w0rp/ale'
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
-Plug 'sickill/vim-pasta'
+Plug 'sheerun/vim-polyglot' " Have vim understand all languges
 Plug 'mileszs/ack.vim', { 'on': 'Ack' }
-Plug '/usr/local/opt/fzf' | Plug 'junegunn/fzf.vim'
-Plug 'christoomey/vim-tmux-navigator'
-Plug 'terryma/vim-expand-region'
-Plug 'vim-scripts/gitignore'
-Plug 'editorconfig/editorconfig-vim'
-Plug 'SirVer/ultisnips'
-Plug 'nathanaelkane/vim-indent-guides'
-Plug 'easymotion/vim-easymotion'
-Plug 'autozimu/LanguageClient-neovim', { 'do': ':UpdateRemotePlugins' }
-Plug 'Shougo/echodoc.vim'
-Plug 'reasonml-editor/vim-reason-plus'
-Plug 'roxma/nvim-completion-manager'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+Plug 'mhinz/vim-startify' " Fancy start screen
+Plug 'neoclide/coc.nvim', {'branch': 'release', 'do': { -> coc#util#install()}}
+
+" ReasonML
+Plug 'rescript-lang/vim-rescript'
+
+" Fountain
+Plug 'kblin/vim-fountain'
+
+" Tmux
+Plug 'tmux-plugins/vim-tmux-focus-events' " Fix focus events in Tmux
+Plug 'christoomey/vim-tmux-navigator' " Make moving into tmux panes easy
+Plug 'edkolev/tmuxline.vim' " Generate Tmux from airline
 
 " UI HELPERS
 Plug 'bling/vim-airline'
-Plug 'airblade/vim-gitgutter'
-
-" RUBY
-Plug 'tpope/vim-rails', { 'for': 'ruby' }
-Plug 'thoughtbot/vim-rspec', { 'for': 'ruby' }
-
-" JAVASCRIPT
-Plug 'ternjs/tern_for_vim', { 'for': ['javascript'], 'do': 'npm i' }
-" Fast lookup of npm bins
-Plug 'jaawerth/nrun.vim'
+" Plug 'airblade/vim-gitgutter'
 
 " The best colors
 Plug 'chriskempson/tomorrow-theme', { 'rtp': 'vim/' }
 Plug 'vim-airline/vim-airline-themes'
 
+" Initialize plugin system
 call plug#end()
-
 " }}}
 
 " ==== General ===================== {{{
@@ -86,11 +71,12 @@ set hidden " Don't unload buffers when leaving them
 set wildmenu " Enable command-line like completion
 set wildmode=list:longest " List all matches and complete till longest common string
 set visualbell " Disable annoying beep
-set cursorline " Show line where cursor is
+" set cursorline " Show line where cursor is
 set ruler " Show current cursor position
 set backspace=indent,eol,start " Backspace over everything in insert mode
 set laststatus=2 " Always show the status line
 set relativenumber " Use relative line numbers
+set number " Show current line number
 set ignorecase " Ignore case when searching
 set smartcase " Be case sensitive when there are capital letters
 set gdefault " Globally replace be default
@@ -108,6 +94,7 @@ set pastetoggle=<F3> " Go into paste mode with F3
 set complete=.,b,u,] " Tab complete correctly
 set t_Co=256 " Give me all the colors pls
 set nobackup " Don't make backups
+set nowritebackup " Don't make backups " Don't make backups
 set noswapfile " Don't make swap files
 set list " Show unprintable characters
 set listchars=tab:▸\  " Char representing a tab
@@ -121,6 +108,15 @@ set fillchars+=vert:\  " Don't show pipes in vertical splits
 set background=dark " I use a dark background
 set nowrap " Don't wrap lines
 set synmaxcol=300 " do not highlith very long lines
+set ttyfast " Make vim fast?
+set cmdheight=2 " Give more space for displaying messages.
+" Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable
+" delays and poor user experience.
+set updatetime=300
+set shortmess+=c " Don't pass messages to |ins-completion-menu|.
+" Always show the signcolumn, otherwise it would shift the text each time
+" diagnostics appear/become resolved.
+set signcolumn=yes
 " set completeopt+=menuone " Better auto complete
 " set completeopt-=preview
 
@@ -148,7 +144,7 @@ augroup miscGroup
     \ endif
 
   autocmd BufWritePre * call StripTrailingWhitespace()
-  autocmd FocusLost * :wa " Save on focus
+
 
   autocmd FileType php setlocal expandtab tabstop=4 shiftwidth=4 softtabstop=4
   autocmd BufNewFile,BufRead Gemfile set filetype=ruby
@@ -158,22 +154,15 @@ augroup miscGroup
   autocmd BufRead,BufNewFile .{babel,eslint,stylelint,jshint}*rc,\.tern-*,*.json set ft=json
   autocmd BufNewFile,BufRead .tags set ft=tags
 
-  "Fugitive
-  autocmd QuickFixCmdPost *grep* cwindow " Auto open quickfix after grep
-  autocmd QuickFixCmdPost *log* cwindow " Auto open quickfix after log
+  autocmd BufWritePre *.{js,jsx,ts,tsx} :Prettier
+  autocmd BufWritePre *.res,*.resi :RescriptFormat
 
   "Spelling
   autocmd BufRead,BufNewFile *.md setlocal spell
   autocmd FileType gitcommit setlocal spell
-
-  " Javascript formatting
-  " Use prettier to format JS with gq
-  autocmd FileType javascript set formatprg=prettier\ --stdin\ --print-width\ 100\ --single-quote\ --trailing-comma\ all
 augroup END
 
-autocmd FileType javascript.jsx set commentstring={/*\ %s\ */}
-
-" }}}
+command! -nargs=0 Prettier :CocCommand prettier.formatFile
 
 " ==== Mappings ==================== {{{
 " ==================================
@@ -181,22 +170,12 @@ autocmd FileType javascript.jsx set commentstring={/*\ %s\ */}
 "NERDTree
 map <F2> :NERDTreeToggle<CR>
 
-"Gundo
-nnoremap <F5> :GundoToggle<CR>
-
-" easymotion
-nmap S <Plug>(easymotion-overwin-f2)
-
 " `noremap` means to make a nonrecursive mapping
 " that means that vim will not take other mapping
 " into account when doing your new map
 
 " Disable useless and annoying keys
 noremap Q <Nop>
-
-" Add keys for LanguageClient
-nnoremap <silent> K :call LanguageClient_textDocument_hover()<CR>
-nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
 
 " Remap :E to :e
 cnoreabbrev <expr> E getcmdtype() == ":" && getcmdline() == "E" ? "e" : "E"
@@ -244,16 +223,6 @@ if has('nvim')
   nmap <BS> <C-W>h
 endif
 
-" vim-expand-region
-vmap v <Plug>(expand_region_expand)
-vmap <C-v> <Plug>(expand_region_shrink)
-
-" Better scrolling
-map <ScrollWheelUp> <C-Y>
-map <S-ScrollWheelUp> <C-U>
-map <ScrollWheelDown> <C-E>
-map <S-ScrollWheelDown> <C-D><Paste>
-
 " Move highlited code up and down
 vnoremap <C-j> :m '>+1<CR>gv=gv
 vnoremap <C-k> :m '<-2<CR>gv=gv
@@ -263,10 +232,61 @@ nmap <M-k>    mo:Ack! "\b<cword>\b" <CR>
 nmap ˚        mo:Ack! "\b<cword>\b" <CR>
 nmap <M-S-k>  mo:Ggrep! "\b<cword>\b" <CR>
 
-" nvim-completion-manager
-" tab is used to tab through options
-inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+" COC Mappings
+" https://github.com/neoclide/coc.nvim#example-vim-configuration
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~ '\s'
+endfunction
+
+" Use <c-space> to trigger completion.
+inoremap <silent><expr> <c-space> coc#refresh()
+
+" Use tab for trigger completion with characters ahead and navigate.
+" NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
+" other plugin before putting this into your config.
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current
+" position. Coc only does snippet and additional edit on confirm.
+if exists('*complete_info')
+  inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
+else
+  imap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+endif
+
+" gd - go to definition of word under cursor
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+
+" gi - go to implementation
+nmap <silent> gi <Plug>(coc-implementation)
+
+" gr - find references
+nmap <silent> gr <Plug>(coc-references)
+
+" K - get hint on whatever's under the cursor
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
+endfunction
+
+nmap <silent> [q <Plug>(coc-diagnostic-prev)
+nmap <silent> ]q <Plug>(coc-diagnostic-next)
+
+" Highlight the symbol and its references when holding the cursor.
+autocmd CursorHold * silent call CocActionAsync('highlight')
+
+com! FormatXML :%!python3 -c "import xml.dom.minidom, sys; print(xml.dom.minidom.parse(sys.stdin).toprettyxml())"
 
 " }}}
 
@@ -280,9 +300,36 @@ nnoremap <leader><space> :noh<cr>
 nnoremap <leader><leader> :Files<CR>
 
 "-- a --"
-nmap <Leader>a :Ag<CR>
+nmap <Leader>a :Ack! --ignore-dir="__generated__" --ignore-dir="node_modules" --ignore-dir="relay-artifacts" --ignore-dir="meepo-types" --ignore-dir="patches" --ignore-dir="build"
 "-- b --"
 "-- c --"
+nnoremap <silent> <leader>co  :<C-u>CocList outline<cr>
+nnoremap <silent> <leader>cs  :<C-u>CocList -I symbols<cr>
+
+" list commands available (and others)
+nnoremap <silent> <leader>cc  :<C-u>CocList commands<cr>
+
+" restart when thigs gets wonky
+nnoremap <silent> <leader>cR  :<C-u>CocRestart<CR>
+
+" View all errors
+nnoremap <silent> <leader>cl  :<C-u>CocList locationlist<CR>
+
+" manage extensions
+nnoremap <silent> <leader>cx  :<C-u>CocList extensions<cr>
+
+" show actions for selcted code
+nnoremap <leader>ca <Plug>(coc-codeaction-selected)
+vnoremap <leader>ca <Plug>(coc-codeaction-selected)
+
+" show fix
+nnoremap <silent> <leader>cf  :<C-u>CocFix<cr>
+
+" rename the current word in the cursor
+nmap <leader>cr  <Plug>(coc-rename)
+
+" format selected
+vmap <leader>cf  <Plug>(coc-format-selected)
 "-- d --"
 vmap <leader>d "+d
 "-- e --"
@@ -316,8 +363,9 @@ nmap <silent> <leader>i <Plug>IndentGuidesToggle
 nnoremap <leader>l :call NumberToggle()<cr>
 "-- m --"
 nnoremap <leader>md :!mkdir -p %:p:h<cr>
-nnoremap <leader>mmd :!jscodeshift -t ~/Code/bucket/lattice/codemods/convert-recompose-to-react-class.js %:p<cr>
-nnoremap <leader>mmu :!jscodeshift -t ~/Code/bucket/lattice/codemods/convert-to-compat-mutation.js %:p<cr>
+nnoremap <leader>mmr :!jscodeshift -t ~/Code/lattice/codemods/convert-recompse-to-hooks.js %:p<cr>
+nnoremap <leader>mmc :!jscodeshift -t ~/Code/lattice/codemods/convert-react-class-to-function.js %:p<cr>
+nnoremap <leader>mmu :!jscodeshift -t ~/Code/lattice/codemods/convert-to-compat-mutation.js %:p<cr>
 "-- n --"
 "-- o --"
 "-- p --"
@@ -327,15 +375,12 @@ vmap <leader>p "+p
 vmap <leader>P "+P
 "-- q --"
 "-- r --"
-nnoremap <leader>rvim :so $MYVIMRC<cr>
-nnoremap <leader>rs :call RunCurrentSpecFile()<cr>
-nnoremap <leader>rts :call RunNearestSpec()<cr>
+" Reload vimrc file
+nnoremap <leader>rvim :so $MYVIMRC<CR>
 "-- s --"
 nnoremap <leader>S :%S/<C-r><C-w>/
 vnoremap <leader>S y:%s/<C-r>"/
-nnoremap <leader>snip :UltiSnipsEdit<cr>
 "-- t --"
-nnoremap <leader>tb :TagbarToggle<CR>
 nnoremap <leader>tmux :e ~/.tmux.conf<cr>
 "-- u --"
 "-- v --"
@@ -349,106 +394,58 @@ vmap <leader>y "+y
 nnoremap <leader>zsh :e ~/.zshrc<cr>
 
 " }}}
-
+nnoremap <leader>tb :TagbarToggle<CR>
 
 " ==== Misc Plugin Configs ========= {{{
 " ==================================
-
-let g:LanguageClient_autoStart = 1
-let g:LanguageClient_serverCommands = {
-    \ 'reason': ['ocaml-language-server', '--stdio'],
-    \ 'ocaml': ['ocaml-language-server', '--stdio'],
-    \ }
-
-" Python3
-let g:python3_host_prog = '/usr/local/bin/python3'
-
-" Gundo Settings
-let g:gundo_right = 1
-
 " ALE
-let g:ale_sign_warning = '▲'
-let g:ale_sign_error = '✗'
-" NUKE FLOW TO OBLIVION. NEVER RUN FLOW. FLOW WILL CONSUME ALL YOUR RESOURCES
-" AND BRING YOUR modern cutting edge hardware to a pathetic crawl. You will
-" hard reboot daily. You will pull your hair out. You will hate life.
-"
-" UNLESS YOU DISABLE FLOW. DO THE RIGHT THING.
-let g:ale_linters = {
-  \   'javascript': ['eslint'],
-  \   'jsx': ['eslint'],
-  \   'javascript.jsx': ['eslint'],
-\}
-highlight link ALEWarningSign String
-highlight link ALEErrorSign Title
+" let g:ale_sign_warning = '▲'
+" let g:ale_sign_error = '✗'
+" " NUKE FLOW TO OBLIVION. NEVER RUN FLOW. FLOW WILL CONSUME ALL YOUR RESOURCES
+" " AND BRING YOUR modern cutting edge hardware to a pathetic crawl. You will
+" " hard reboot daily. You will pull your hair out. You will hate life.
+" "
+" " UNLESS YOU DISABLE FLOW. DO THE RIGHT THING.
+" let g:ale_linters = {
+"   \   'javascript': ['eslint', 'stylelint'],
+"   \   'jsx': ['eslint'],
+"   \   'javascript.jsx': ['eslint', 'stylelint'],
+"   \   'terraform': ['tflint'],
+" \}
+" let g:ale_fixers = {
+"   \   'javascript': ['prettier'],
+"   \   'jsx': ['eslint', 'prettier'],
+"   \   'javascript.jsx': ['prettier'],
+" \}
+" let g:ale_fix_on_save = 1
+" highlight link ALEWarningSign String
+" highlight link ALEErrorSign Title
 
 " FZF (replaces Ctrl-P, FuzzyFinder and Command-T)
-set rtp+=/usr/local/opt/fzf
-set rtp+=~/.fzf
+" set rtp+=/usr/local/opt/fzf
+" set rtp+=~/.fzf
+let g:fzf_buffers_jump = 1
 
 " Tell ack.vim to use ag (the Silver Searcher) instead
 let g:ackprg = 'ag --vimgrep'
 
-" vim-spec
-let g:rspec_command = "compiler rspec | set makeprg=zeus | Make rspec {spec}"
+" Set where rescript lang server is at
+let g:rescript_type_hint_bin = "~/Code/reason-language-server/bin.exe"
+
+" startify
+let g:startify_change_to_dir = 0
+let g:startify_change_to_vcs_root = 1
 
 " airline
 let g:airline_theme='tomorrow'
 let g:airline#extensions#tagbar#enabled = 0
-
-" vim-jsx
-let g:jsx_ext_required = 0 " Allow JSX in normal JS files
-
-" editorconfig-vim
-" Work with Fugitive
-let g:EditorConfig_exclude_patterns = ['fugitive://.*']
-
-" easymotion
-let g:EasyMotion_do_mapping = 0 " Disable default mappings
-" Turn on case insensitive feature
-let g:EasyMotion_smartcase = 1
-
-" Easytags
-set tags=./.tags,.tags;
-let g:easytags_events = ['BufReadPost', 'BufWritePost']
-let g:easytags_async = 1
-let g:easytags_dynamic_files = 2
-let g:easytags_resolve_links = 1
-
-" Tagbar
-let g:tagabar_show_linenumbers = -1
-let g:tagbar_singleclick = 1
-let g:tagbar_auto_open = 1
-
-" Ultisnips
-let g:UltiSnipsSnippetDirectories=[$HOME.'/.config/nvim/UltiSnips']
+let g:airline#extensions#tmuxline#enabled = 1
+let airline#extensions#tmuxline#snapshot_file = "~/.vim/tmux-status.conf"
+" let g:airline#extensions#ale#enabled = 1
 
 " NERDTree
 let g:NERDTreeWinSize=60
 let g:NERDTreeShowHidden=1
 let g:NERDTreeIgnore = ['^\.tags$', '^\.DS_Store$', '^\.git$']
-
-" Indent Guides
-let g:indent_guides_guide_size = 1
-let g:indent_guides_start_level = 2
-let g:indent_guides_default_mapping = 0
-
-" ==== Functions =============== {{{
-" ==================================
-
-"Switch between numbers
-function! NumberToggle()
-  if(&relativenumber == 1)
-    set number
-  else
-    set relativenumber
-  endif
-endfunc
-
-"Find replace in a project
-function! FindReplace(find, replace)
-  call Ag(find)
-  call Cdo
-endfunc
 
 " }}}
