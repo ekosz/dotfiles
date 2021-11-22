@@ -8,7 +8,6 @@
   ui = auto
 [github]
   user = ekosz
-  token = 7bb57bcf2c3f546cf34f3eaf304a1aeb
 [alias]
   st = status -sb
   br = branch
