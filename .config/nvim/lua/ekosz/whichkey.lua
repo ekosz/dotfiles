@@ -186,3 +186,15 @@ local mappings = {
 
 which_key.setup(setup)
 which_key.register(mappings, opts)
+which_key.register({
+  ["]"] = {
+    b = { ":BufferLineCycleNext<CR>", "Next buffer" },
+    w = { ":Gitsigns next_hunk<CR>", "Next git hunk" },
+    q = "Next diagnostic",
+  },
+  ["["] = {
+    b = { ":BufferLineCyclePrev<CR>", "Previous buffer" },
+    w = { ":Gitsigns prev_hunk<CR>", "Previous git hunk" },
+    q = "Previous diagnostic",
+  },
+}, vim.tbl_deep_extend("force", opts, { prefix = "" }))

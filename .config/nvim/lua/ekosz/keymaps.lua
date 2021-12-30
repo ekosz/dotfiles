@@ -75,9 +75,6 @@ map("n", "<left>", ":vertical resize -2<CR>")
 map("n", "<right>", ":vertical resize +2<CR>")
 -- Don't need help
 map("n", "<F1>", "<ESC>")
--- Move between buffers
-map("n", "]b", ":BufferLineCycleNext<CR>")
-map("n", "[b", ":BufferLineCyclePrev<CR>")
 
 -- INSERT --
 -- Don't need help
