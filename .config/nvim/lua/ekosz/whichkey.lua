@@ -82,8 +82,8 @@ local opts = {
 local mappings = {
   [" "] = { "<cmd>nohlsearch<CR>", "No Highlight" },
   [","] = {
-    "<cmd>lua require('telescope.builtin').find_files(require('telescope.themes').get_dropdown{previewer = false})<cr>",
-    "Find files",
+    "<cmd>lua find_project_files()<cr>",
+    "Find project files",
   },
   ["b"] = {
     "<cmd>lua require('telescope.builtin').buffers(require('telescope.themes').get_dropdown{previewer = false})<cr>",
