@@ -96,6 +96,8 @@ telescope.setup {
   },
 }
 
+telescope.load_extension('fzf')
+
 -- Custom function for ergonomic searching
 local utils = require('telescope.utils')
 local builtin = require('telescope.builtin')
