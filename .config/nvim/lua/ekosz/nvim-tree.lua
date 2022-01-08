@@ -62,7 +62,7 @@ nvim_tree.setup {
   update_focused_file = {
     enable = true,
     update_cwd = true,
-    ignore_list = {},
+    ignore_list = { "help" },
   },
   system_open = {
     cmd = nil,
@@ -83,6 +83,7 @@ nvim_tree.setup {
     hide_root_folder = false,
     side = "left",
     auto_resize = true,
+    signcolumn = "auto",
     mappings = {
       custom_only = false,
       list = {
