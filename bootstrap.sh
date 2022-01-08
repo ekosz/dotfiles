@@ -16,7 +16,7 @@ function doIt() {
   fi
 
   echo "Installing Homebrew depencies..."
-  brew bundle
+  brew bundle --no-lock
 
   echo "Syncing dot files..."
   rsync --exclude ".git/" \
