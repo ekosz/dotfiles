@@ -7,11 +7,11 @@ set -x
 declare -A gaps
 declare -A color
 
-gaps["top"]="4"
-gaps["bottom"]="24"
-gaps["left"]="4"
-gaps["right"]="4"
-gaps["inner"]="4"
+gaps["top"]="50"
+gaps["bottom"]="50"
+gaps["left"]="50"
+gaps["right"]="50"
+gaps["window"]="20"
 
 color["focused"]="0xE0808080"
 color["normal"]="0x00010101"
@@ -34,7 +34,7 @@ yabai -m config top_padding                 "${gaps["top"]}"
 yabai -m config bottom_padding              "${gaps["bottom"]}"
 yabai -m config left_padding                "${gaps["left"]}"
 yabai -m config right_padding               "${gaps["right"]}"
-yabai -m config window_gap                  "${gaps["inner"]}"
+yabai -m config window_gap                  "${gaps["window"]}"
 yabai -m config external_bar                all:28:0 # simple-bar
 
 # set mouse follows focus mode
