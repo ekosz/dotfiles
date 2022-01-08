@@ -6,3 +6,6 @@ brew "neofetch"
 
 tap "jesseduffield/lazygit"
 brew "jesseduffield/lazygit/lazygit"
+
+tap "koekeishiya/formulae"
+brew "koekeishiya/formulae/skhd"
