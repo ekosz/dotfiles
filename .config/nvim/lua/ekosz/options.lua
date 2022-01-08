@@ -31,6 +31,7 @@ local options = {
     "trail:·" -- Show trailing spaces as dots
   ),
   number = true, -- Show current line number
+  numberwidth = 2, -- Two columns for the number
   pastetoggle = "<F3>", -- Go into paste mode with F3
   pumheight = 10, -- pop up menu height
   relativenumber = true, -- Use relative line numbers
@@ -42,6 +43,7 @@ local options = {
   showmode = false, -- Don't show current mode, let airline handle that
   -- Always show the signcolumn, otherwise it would shift the text each time
   -- diagnostics appear/become resolved.
+  sidescrolloff = 8, -- Same as scolloff
   signcolumn = "yes",
   smartcase = true, -- Be case sensitive when there are capital letters
   softtabstop = 2, -- ...
@@ -53,6 +55,7 @@ local options = {
   termguicolors = true,
   textwidth = 79, -- Wrap text around the 79 column
   timeoutlen = 100, -- time to wait for a mapped sequence to complete (in milliseconds)
+  title = true, -- Show title
   undofile = true, -- Save a file of all of the undos
   undolevels = 1000, -- Maximum number of changes that can be undone
   -- Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable
@@ -65,8 +68,19 @@ local options = {
   writebackup = false, -- Don't make backups
 }
 
-vim.opt.shortmess:append "c"
-vim.cmd [[set iskeyword+=-]] -- Add dash (-) to keywords for better "word" (w) movement
+-- c - don't give |ins-completion-menu| messages. For example,
+--     "-- XXX completion (YYY)", "match 1 of 2", "The only match",
+--     "Pattern not found", "Back at original", etc.
+-- s - don't give "search hit BOTTOM, continuing at TOP" or "search
+--     hit TOP, continuing at BOTTOM" messages; when using the search
+--     count do not show "W" after the count message
+-- I - don't give the intro message when starting Vim :intro.
+vim.opt.shortmess:append "csI"
+-- Add dash (-) to keywords for better "word" (w) movement
+vim.cmd [[set iskeyword+=-]]
+-- go to previous/next line with h,l,left arrow and right arrow
+-- when cursor reaches end/beginning of line
+vim.opt.whichwrap:append "<>[]hl"
 
 for k, v in pairs(options) do
   vim.opt[k] = v
