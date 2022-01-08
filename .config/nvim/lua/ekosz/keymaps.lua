@@ -12,19 +12,25 @@ vim.g.mapleader = ","
 vim.g.maplocalleader = ","
 
 -- Closes the current buffer, or if there are no bufers, quits instead
-function _G.close_or_quit()
+function _G.close_or_quit(force)
+  if (force) then
+    -- If we're asked to force quit, do just that
+    vim.cmd "q!"
+    return
+  end
+
   local win_count = vim.fn.winnr('$')
 
   -- If there is more than one window/pane open, then just do normal q to close the window
   if win_count > 1 then
-    vim.cmd("q")
+    vim.cmd "q"
     return
   end
 
   local ok, _ = pcall(vim.cmd, "Bdelete!")
   if not ok then
     -- vim-bbye not loaded, fallback to normal quit
-    vim.cmd("q")
+    vim.cmd "q"
   end
 
   local buf_count = 0
@@ -36,11 +42,11 @@ function _G.close_or_quit()
 
   if buf_count == 0 then
     -- No more buffers, time to quit
-    vim.cmd("q")
+    vim.cmd "q"
   end
 end
 
-vim.cmd [[command -nargs=0 CloseOrQuit lua _G.close_or_quit()]]
+vim.cmd [[command -bang -nargs=0 CloseOrQuit lua close_or_quit("<bang>" == "!")]]
 
 -- Mapping cannot(?) be done in lua
 vim.cmd [[
