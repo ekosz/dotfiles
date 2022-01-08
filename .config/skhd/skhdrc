@@ -74,16 +74,16 @@
 alt - return : Applications/Alacritty.app/Contents/MacOS/alacritty
 
 # Navigation
-alt - h : yabai -m window --focus west
+alt - h : yabai -m window --focus west || yabai -m display --focus west
 alt - j : yabai -m window --focus south
 alt - k : yabai -m window --focus north
-alt - l : yabai -m window --focus east
+alt - l : yabai -m window --focus east || yabai -m display --focus east
 
 # Moving windows
-shift + alt - h : yabai -m window --warp west
+shift + alt - h : yabai -m window --warp west || $(yabai -m window --display west; yabai -m display --focus west)
 shift + alt - j : yabai -m window --warp south
 shift + alt - k : yabai -m window --warp north
-shift + alt - l : yabai -m window --warp east
+shift + alt - l : yabai -m window --warp east || $(yabai -m window --display east; yabai -m display --focus east)
 
 # Move focus container to workspace
 shift + alt - m : yabai -m window --space last; yabai -m space --focus last
@@ -131,9 +131,9 @@ shift + alt - space : \
 
 # Restart Yabai
 shift + lctrl + alt - r : \
-    /usr/bin/env osascript <<< \
-        "display notification \"Restarting Yabai\" with title \"Yabai\""; \
-    launchctl kickstart -k "gui/${UID}/homebrew.mxcl.yabai"
+    osascript -e \
+    "display notification \"Restarting Yabai\" with title \"Yabai\"" && \
+    brew services restart yabai
 
 # Make window native fullscreen
 alt - f         : yabai -m window --toggle zoom-fullscreen
