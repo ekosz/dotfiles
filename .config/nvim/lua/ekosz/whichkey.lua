@@ -198,3 +198,6 @@ which_key.register({
     q = "Previous diagnostic",
   },
 }, vim.tbl_deep_extend("force", opts, { prefix = "" }))
+which_key.register({
+  y = { "\"+y", "Copy to paste buffer" },
+}, vim.tbl_deep_extend("force", opts, { mode = "v" }))
