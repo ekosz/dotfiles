@@ -3,5 +3,6 @@ if not status_ok then
   return
 end
 
-require("ekosz.lsp.lsp-installer")
+require "ekosz.lsp.lsp-installer"
 require("ekosz.lsp.handlers").setup()
+require "ekosz.lsp.null-ls"
