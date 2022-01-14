@@ -127,6 +127,9 @@ shift + lctrl + alt - l : yabai -m window --insert east
 # Float / Unfloat window
 lctrl + alt - space : yabai -m window --toggle float
 
+# Toggle mode
+shift + lctrl + alt - space : yabai -m space --layout $(yabai -m query --spaces --space | jq -r 'if .type == "bsp" then "float" else "bsp" end')
+
 # Restart Yabai
 shift + lctrl + alt - r : \
     osascript -e \
