@@ -45,6 +45,7 @@ return packer.startup(function(use)
   use "nvim-lua/popup.nvim" -- An implementation of the Popup API from vim in Neovim
   use "nvim-lua/plenary.nvim" -- Useful lua functions used ny lots of plugins
   use "antoinemadec/FixCursorHold.nvim" -- This is needed to fix lsp doc highlight
+  use "tpope/vim-surround" -- Allows surround commands
 
   -- A bunch of color schemas based on base16
   use 'RRethy/nvim-base16'
