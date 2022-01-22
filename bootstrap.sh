@@ -68,6 +68,9 @@ fi
 if [[ ! -n $ONLY || $ONLY == "skhd" ]]; then
   ./skhd/install.sh
 fi
+if [[ ! -n $ONLY || $ONLY == "tmux" ]]; then
+  ./tmux/install.sh
+fi
 if [[ ! -n $ONLY || $ONLY == "yabai" ]]; then
   ./yabai/install.sh
 fi
