@@ -27,6 +27,7 @@ export VIMCONFIG="$XDG_CONFIG_HOME/nvim"
 
 # fzf
 export FZF_DEFAULT_COMMAND="rg --files --hidden --glob '!.git'"
+export FZF_PREVIEW_DIR_CMD="lcd --all --color=always"
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
 # NPM
@@ -37,8 +38,13 @@ export NPM_CONFIG_PREFIX="$XDG_CONFIG_HOME/node_modules"
 # git
 export GIT_REVIEW_BASE=master # See gitconfig
 
-# PATH
-export PATH="$NPM_BIN:$PATH"                                        # NPM
+# volta
+export VOLTA_HOME="$HOME/.volta"
 
 # Cargo
 source "$HOME/.cargo/env"
+
+# PATH
+export PATH="$NPM_BIN:$PATH"                                        # NPM
+export PATH="$VOLTA_HOME/bin:$PATH"                                        # NPM
+export PATH="$HOME/.cargo/bin:$PATH"                                        # NPM
