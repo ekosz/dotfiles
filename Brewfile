@@ -3,6 +3,8 @@ brew "rg"
 brew "jq"
 brew "fzf"
 brew "neofetch"
+brew "tmux"
+brew "diff-so-fancy"
 
 tap "jesseduffield/lazygit"
 brew "jesseduffield/lazygit/lazygit"

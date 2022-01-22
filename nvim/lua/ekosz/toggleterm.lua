@@ -46,6 +46,8 @@ local function create_terminal(options)
     on_open = function(term)
       -- Make Ctrl-z minimize/close the terminal
       vim.api.nvim_buf_set_keymap(term.bufnr, "t", "<C-z>", "<cmd>close<CR>", {noremap = true, silent = true})
+      -- Map "q" in normal mode to close terminal
+      vim.api.nvim_buf_set_keymap(term.bufnr, "n", "q", [[<cmd>close<CR>]], {noremap = true, silent = true})
       if (opts.on_open) then
         opts.on_open(term)
       end

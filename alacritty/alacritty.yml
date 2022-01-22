@@ -418,11 +418,11 @@ colors:
 #   - (Linux/BSD) user login shell
 #   - (Windows) powershell
 shell:
-  program: /opt/homebrew/bin/fish
+  program: /bin/zsh
   args:
     - -l
     - -c
-    - "nvim"
+    - "tmux"
 
 # Startup directory
 #
