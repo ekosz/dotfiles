@@ -102,8 +102,5 @@ map("n", "<C-z>", "<noop>");
 map("v", "/", "/\\v")
 -- Don't need help
 map("v", "<F1>", "<ESC>")
--- Stay in indent mode
-map("v", "<", "<gv")
-map("v", ">", ">gv")
 -- Don't lose current copy register when pasting in visual mode
 map("v", "p", '"_dP')
