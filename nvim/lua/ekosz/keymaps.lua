@@ -94,11 +94,6 @@ map("i", "<right>", "<nop>")
 map("i", "jj", "<ESC>")
 map("i", "jk", "<ESC>")
 map("i", "kj", "<ESC>")
--- Better window navigation
-map("n", "<C-h>", "<C-w>h")
-map("n", "<C-j>", "<C-w>j")
-map("n", "<C-k>", "<C-w>k")
-map("n", "<C-l>", "<C-w>l")
 -- Remove ability to ctrl-z
 map("n", "<C-z>", "<noop>");
 

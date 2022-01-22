@@ -46,6 +46,7 @@ return packer.startup(function(use)
   use "nvim-lua/plenary.nvim" -- Useful lua functions used ny lots of plugins
   use "antoinemadec/FixCursorHold.nvim" -- This is needed to fix lsp doc highlight
   use "tpope/vim-surround" -- Allows surround commands
+  use "tpope/vim-repeat" -- Allows commands to be repeated
 
   -- A bunch of color schemas based on base16
   use 'RRethy/nvim-base16'
@@ -103,6 +104,9 @@ return packer.startup(function(use)
 
   -- Startup splash screen
   use "goolord/alpha-nvim"
+
+  -- Better integration of tmux and nvim
+  use "aserowy/tmux.nvim"
 
   -- Automatically set up your configuration after cloning packer.nvim
   -- Put this at the end after all plugins
