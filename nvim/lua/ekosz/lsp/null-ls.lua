@@ -19,5 +19,6 @@ null_ls.setup({
     code_actions.eslint_d,
     code_actions.gitsigns,
     diagnostics.eslint_d,
+    code_actions.eslint_d,
   },
 })
