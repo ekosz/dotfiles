@@ -26,7 +26,7 @@
 [github]
   user = ekosz
 [alias]
-  pl = pull --rebase
+  pl = pull --rebase --autostash
   fpush = !git push --force-with-lease -u origin $(git rev-parse --abbrev-ref HEAD);
   dbranches = "!f() { \
     git branch | \
