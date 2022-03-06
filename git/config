@@ -26,7 +26,7 @@
 [github]
   user = ekosz
 [alias]
-  pl = pull --rebase --autostash
+  pl = !git pull --rebase --autostash origin $(git rev-parse --abbrev-ref HEAD);
   fpush = !git push --force-with-lease -u origin $(git rev-parse --abbrev-ref HEAD);
   dbranches = "!f() { \
     git branch | \
@@ -38,7 +38,7 @@
   dmerged = "!f() { git branch --merged | grep -v '^* master$' | grep -v '^  master$' | grep -v '^  develop$' | xargs git branch -d; }; f"
   cleanup = "!f() { git stash clear; git remote prune origin; git dmerged; git gc; }; f"
   uptodate = !git fetch && git rebase origin/master
-  fixup = "!f() { git commit --fixup=$1; GIT_SEQUENCE_EDITOR=: git rebase -i --autosquash \"$1^\"; }; f"
+  fixup = "!f() { git commit --fixup=$1; GIT_SEQUENCE_EDITOR=: git rebase -i --autosquash --autostash \"$1^\"; }; f"
 [help]
   autocorrect = 1
 [pager]
