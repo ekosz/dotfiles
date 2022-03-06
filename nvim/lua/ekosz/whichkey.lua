@@ -190,12 +190,12 @@ which_key.register({
   ["]"] = {
     ["]"] = { ":BufferLineCycleNext<CR>", "Next buffer" },
     w = { ":Gitsigns next_hunk<CR>", "Next git hunk" },
-    q = "Next diagnostic",
+    q = { "<cmd>lua vim.diagnostic.goto_next({ border = 'rounded' })<CR>", "Next diagnostic" },
   },
   ["["] = {
     ["["] = { ":BufferLineCyclePrev<CR>", "Previous buffer" },
     w = { ":Gitsigns prev_hunk<CR>", "Previous git hunk" },
-    q = "Previous diagnostic",
+    q = { "<cmd>lua vim.diagnostic.goto_prev({ border = 'rounded' })<CR>", "Previous diagnostic" },
   },
 }, vim.tbl_deep_extend("force", opts, { prefix = "" }))
 which_key.register({
