@@ -12,11 +12,16 @@ vim.cmd [[
     autocmd FileType gitcommit setlocal wrap
     autocmd FileType gitcommit setlocal spell
   augroup end
-  j
+
   augroup _markdown
     autocmd!
     autocmd FileType markdown setlocal wrap
     autocmd FileType markdown setlocal spell
+  augroup end
+
+  augroup _zig
+    autocmd!
+    autocmd BufRead,BufNewFile *.zig setlocal filetype=zig
   augroup end
 
   augroup _auto_resize
