@@ -47,6 +47,7 @@ return packer.startup(function(use)
   use "antoinemadec/FixCursorHold.nvim" -- This is needed to fix lsp doc highlight
   use "tpope/vim-surround" -- Allows surround commands
   use "tpope/vim-repeat" -- Allows commands to be repeated
+  use "tpope/vim-abolish" -- Better find/replace
 
   -- A bunch of color schemas based on base16
   use 'RRethy/nvim-base16'
