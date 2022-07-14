@@ -42,5 +42,6 @@ fi
 echo "Linking yabai..."
 mkdir -p $XDG_CONFIG_HOME/yabai;
 ln -sf $DOTFILES/yabai/yabairc $XDG_CONFIG_HOME/yabai/yabairc
+ln -sf $DOTFILES/yabai/on-display-changed $XDG_CONFIG_HOME/yabai/on-display-changed
 
 brew services restart yabai

@@ -28,7 +28,7 @@ yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
 
 # ===== Tiling setting =========================
 
-yabai -m config layout                      bsp
+yabai -m config layout                      $(yabai -m query --displays --display | jq -r 'if .frame.w < 2048 then "stack" else "bsp" end')
 
 yabai -m config top_padding                 "${gaps["top"]}"
 yabai -m config bottom_padding              "${gaps["bottom"]}"
@@ -90,6 +90,16 @@ yabai -m rule --add label="mpv" app="^mpv$" manage=off
 yabai -m rule --add label="Software Update" title="Software Update" manage=off
 yabai -m rule --add label="About This Mac" app="System Information" title="About This Mac" manage=off
 yabai -m rule --add label="Zoom" app="zoom.us" title=".*" manage=off
+
+# ===== Signals ================================
+
+# Swich layout on display change
+yabai -m signal --add event=display_added \
+  action="$XDG_CONFIG_HOME/yabai/on-display-changed"
+yabai -m signal --add event=display_removed \
+  action="$XDG_CONFIG_HOME/yabai/on-display-changed"
+yabai -m signal --add event=display_resized \
+  action="$XDG_CONFIG_HOME/yabai/on-display-changed"
 
 set +x
 printf "yabai: configuration loaded...\\n"

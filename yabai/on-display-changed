@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+for display in $(yabai -m query --displays | jq -r -c '.[]'); do
+  echo "$display"
+  layout=$(echo "$display" | jq -r 'if .frame.w < 2048 then "stack" else "bsp" end')
+  for id in $(echo "$display" | jq -r '.spaces[]'); do
+    echo "yabai -m space $id --layout $layout"
+    yabai -m space "$id" --layout "$layout"
+  done
+done
