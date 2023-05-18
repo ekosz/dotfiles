@@ -96,6 +96,9 @@ source $ZSH/oh-my-zsh.sh
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
 
+# ignore ctrl+D
+setopt IGNOREEOF
+
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
 # users are encouraged to define aliases within the ZSH_CUSTOM folder.
@@ -104,4 +107,4 @@ alias ls="lsd"
 alias tree="lsd --tree"
 alias vim="nvim"
 alias cat="bat"
-alias v="node ~/ghq/github.com/vstreame/vstream/packages/v-cli/src/bin.mjs"
+alias v="node ~/ghq/github.com/vstreame/vstream/packages/tools/tools-v-cli/src/bin.mjs"
