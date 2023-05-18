@@ -30,6 +30,7 @@ local options = {
     "precedes:❮," .. -- Char representing an extending line in the other direction
     "trail:·" -- Show trailing spaces as dots
   ),
+  mouse = "", -- Turn off mouse
   number = true, -- Show current line number
   numberwidth = 2, -- Two columns for the number
   pastetoggle = "<F3>", -- Go into paste mode with F3

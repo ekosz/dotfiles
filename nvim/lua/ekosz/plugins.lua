@@ -86,7 +86,7 @@ return packer.startup(function(use)
 
   -- Tree view
   use 'kyazdani42/nvim-web-devicons'
-  use { 'kyazdani42/nvim-tree.lua', tag = "1.6.7" }
+  use { 'kyazdani42/nvim-tree.lua' }
 
   -- Nicer leader commands
   use "folke/which-key.nvim"
