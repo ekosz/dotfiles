@@ -35,7 +35,7 @@
       fzf --multi --preview=\"git log -n 10 {}\" | \
       xargs git branch --delete --force; \
     }; f"
-  dmerged = "!f() { git branch --merged | grep -v '^* master$' | grep -v '^  master$' | grep -v '^  develop$' | xargs git branch -d; }; f"
+  dmerged = "!f() { git branch --merged | grep -Ev '^\\*? (master|main)$' | xargs git branch -d; }; f"
   cleanup = "!f() { git stash clear; git remote prune origin; git dmerged; git gc; }; f"
   uptodate = !git fetch && git rebase origin/master
   fixup = "!f() { git commit --fixup=$1; GIT_SEQUENCE_EDITOR=: git rebase -i --autosquash --autostash \"$1^\"; }; f"
