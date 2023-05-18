@@ -35,16 +35,22 @@ export NPM_PATH="$XDG_CONFIG_HOME/node_modules"
 export NPM_BIN="$XDG_CONFIG_HOME/node_modules/bin"
 export NPM_CONFIG_PREFIX="$XDG_CONFIG_HOME/node_modules"
 
+# Pnpm
+export PNPM_HOME="$XDG_DATA_HOME/pnpm"
+
 # git
 export GIT_REVIEW_BASE=master # See gitconfig
 
 # volta
 export VOLTA_HOME="$HOME/.volta"
+export VOLTA_FEATURE_PNPM=1
 
 # Cargo
 source "$HOME/.cargo/env"
 
 # PATH
-export PATH="$NPM_BIN:$PATH"                                        # NPM
-export PATH="$VOLTA_HOME/bin:$PATH"                                        # NPM
-export PATH="$HOME/.cargo/bin:$PATH"                                        # NPM
+export PATH="$NPM_BIN:$PATH"
+export PATH="$PNPM_HOME:$PATH"
+export PATH="$VOLTA_HOME/bin:$PATH"
+export PATH="$HOME/.cargo/bin:$PATH"
+export PATH="$HOME/.local/bin:$PATH"
