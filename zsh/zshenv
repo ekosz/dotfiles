@@ -49,8 +49,8 @@ export VOLTA_FEATURE_PNPM=1
 source "$HOME/.cargo/env"
 
 # PATH
+export PATH="$VOLTA_HOME/bin:$PATH"
 export PATH="$NPM_BIN:$PATH"
 export PATH="$PNPM_HOME:$PATH"
-export PATH="$VOLTA_HOME/bin:$PATH"
 export PATH="$HOME/.cargo/bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"

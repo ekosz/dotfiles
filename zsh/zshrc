@@ -108,3 +108,6 @@ alias tree="lsd --tree"
 alias vim="nvim"
 alias cat="bat"
 alias v="node ~/ghq/github.com/vstreame/vstream/packages/tools/tools-v-cli/src/bin.mjs"
+
+# bun completions
+[ -s "/Users/e/.bun/_bun" ] && source "/Users/e/.bun/_bun"

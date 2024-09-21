@@ -1,6 +1,4 @@
-#!/usr/bin/env bash
-
-set -x
+#!/opt/homebrew/bin/bash
 
 # ====== Variables =============================
 
@@ -21,26 +19,23 @@ color["preselect"]="0xE02d74da"
 # see this wiki page for information:
 #  - https://github.com/koekeishiya/yabai/wiki/Installing-yabai-(latest-release)
 #
-sudo yabai --load-sa
-yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
+# sudo yabai --load-sa
+# yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
 
 # ===== Tiling setting =========================
 
 # ===== Tiling setting =========================
 
-yabai -m config layout                      $(yabai -m query --displays --display | jq -r 'if .frame.w < 2048 then "stack" else "bsp" end')
-
-yabai -m config top_padding                 "${gaps["top"]}"
-yabai -m config bottom_padding              "${gaps["bottom"]}"
-yabai -m config left_padding                "${gaps["left"]}"
-yabai -m config right_padding               "${gaps["right"]}"
-yabai -m config window_gap                  "${gaps["window"]}"
-yabai -m config external_bar                all:28:0 # simple-bar
-
-# set mouse follows focus mode
-yabai -m config mouse_follows_focus         off
-# set focus follows mouse mode
-yabai -m config focus_follows_mouse         off
+yabai -m config \
+	layout $(yabai -m query --displays --display | jq -r 'if .frame.w < 2048 then "stack" else "bsp" end') \
+	top_padding "${gaps["top"]}" \
+	bottom_padding "${gaps["bottom"]}" \
+	left_padding "${gaps["left"]}" \
+	right_padding "${gaps["right"]}" \
+	window_gap "${gaps["window"]}" \
+	external_bar all:28:0 \
+	mouse_follows_focus off \
+	focus_follows_mouse off
 
 # ---- SIP DISABLE REQUIRED ----
 # floating windows are always on top
@@ -52,16 +47,15 @@ yabai -m config focus_follows_mouse         off
 # ---- SIP DISABLE REQUIRED ----
 # yabai -m config window_border               on
 # yabai -m config window_border_width         2
-yabai -m config active_window_border_color  "${color["focused"]}"
-yabai -m config normal_window_border_color  "${color["normal"]}"
-yabai -m config insert_feedback_color       "${color["preselect"]}"
+# yabai -m config active_window_border_color "${color["focused"]}"
+# yabai -m config normal_window_border_color "${color["normal"]}"
+# yabai -m config insert_feedback_color "${color["preselect"]}"
 
 # ---- SIP DISABLE REQUIRED ----
 # yabai -m config active_window_opacity       1.0
 # yabai -m config normal_window_opacity       0.90
-yabai -m config split_ratio                 0.50
-
-yabai -m config auto_balance                off
+yabai -m config split_ratio 0.50
+yabai -m config auto_balance off
 
 # When you drag a tiled window onto another, yabai swaps their positions in the
 # window tree. If you resize a tiled window, yabai will adjust splits to fit
@@ -69,11 +63,11 @@ yabai -m config auto_balance                off
 # Additionally, yabai can enable you to move and resize windows by clicking
 # anywhere on them while holding a modifier key. set mouse interaction modifier
 # key
-yabai -m config mouse_modifier              fn
+yabai -m config mouse_modifier fn
 # set modifier + left-click drag to move window
-yabai -m config mouse_action1               move
+yabai -m config mouse_action1 move
 # set modifier + right-click drag to resize window
-yabai -m config mouse_action2               resize
+yabai -m config mouse_action2 resize
 
 # ===== Rules ==================================
 
@@ -81,6 +75,7 @@ yabai -m rule --add label="Finder" app="^Finder$" title="(Co(py|nnect)|Move|Info
 yabai -m rule --add label="Safari" app="^Safari$" title="^(General|(Tab|Password|Website|Extension)s|AutoFill|Se(arch|curity)|Privacy|Advance)$" manage=off
 yabai -m rule --add label="macfeh" app="^macfeh$" manage=off
 yabai -m rule --add label="System Preferences" app="^System Preferences$" title=".*" manage=off
+yabai -m rule --add label="VPN by Google One" app="Google One" title=".*" manage=off
 yabai -m rule --add label="App Store" app="^App Store$" manage=off
 yabai -m rule --add label="Activity Monitor" app="^Activity Monitor$" manage=off
 yabai -m rule --add label="KeePassXC" app="^KeePassXC$" manage=off
@@ -95,11 +90,10 @@ yabai -m rule --add label="Zoom" app="zoom.us" title=".*" manage=off
 
 # Swich layout on display change
 yabai -m signal --add event=display_added \
-  action="$XDG_CONFIG_HOME/yabai/on-display-changed"
+	action="$XDG_CONFIG_HOME/yabai/on-display-changed"
 yabai -m signal --add event=display_removed \
-  action="$XDG_CONFIG_HOME/yabai/on-display-changed"
+	action="$XDG_CONFIG_HOME/yabai/on-display-changed"
 yabai -m signal --add event=display_resized \
-  action="$XDG_CONFIG_HOME/yabai/on-display-changed"
+	action="$XDG_CONFIG_HOME/yabai/on-display-changed"
 
-set +x
-printf "yabai: configuration loaded...\\n"
+echo "yabai: configuration loaded..."
